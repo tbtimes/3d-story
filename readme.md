@@ -10,7 +10,9 @@ The other team was focused on tech. The tech team (composed of Nathaniel Lash, E
 
 After the graphic ran, readers told us that the story was moving and effective. We also fielded a lot of questions from folks in other newsrooms asking how they could do something similar. 
 
-This article is an attempt to answer those questions. We won’t discuss high level narrative decisions — that could be an article on it’s own — instead, this article is a low-level technical tutorial. It assumes only that the reader knows how to write vanilla es5 javascript, though experience with object-oriented programming will be helpful. If you aren’t familiar with javascript, you may still be interested in the [section on Blender](#modeling), the 3d modeling and rendering software. By the end of the article, you will have built [this](http://linklink). [Link to repo](https://github.com/ejmurra/3d-story)
+This article is an attempt to answer those questions. We won’t discuss high level narrative decisions — that could be an article on it’s own — instead, this article is a low-level technical tutorial. It assumes only that the reader knows how to write vanilla es5 javascript, though experience with object-oriented programming will be helpful. If you aren’t familiar with javascript, you may still be interested in the [section on Blender](#modeling), the 3d modeling and rendering software. By the end of the article, you will have built [this](http://linklink). 
+
+[Link to repo](https://github.com/tbtimes/3d-story)
 ##Table of contents
 * [Setting up your project](#setting-up-your-project)
 	* [Project structure](#project-structure)
@@ -163,7 +165,7 @@ Go ahead and practice moving around the 3D viewport, selecting and moving the de
 ## Laying the foundations
 Blender starts with a default scene that includes a camera (the black pyramid), a cube, and a lamp (the black "sun" icon). The cube should be selected. Press "a" twice to select all objects, press the "delete" key and then "enter" to confirm. You will be left with an empty scene.
 
-The first thing we are going to do is load an image of a floorplan into the scene that we can use as a reference to build our model off of. Download the `resources/simpleFloorPlan.jpg` from [this repo](https://github.com/ejmurra/3d-story). (This is simpler than what we used to make our graphic, but similar to what the City of Orlando sent us of the Pulse nightclub.)
+The first thing we are going to do is load an image of a floorplan into the scene that we can use as a reference to build our model off of. Download the `resources/simpleFloorPlan.jpg` from [this repo](https://github.com/tbtimes/3d-story). (This is simpler than what we used to make our graphic, but similar to what the City of Orlando sent us of the Pulse nightclub.)
 
 Back in Blender, place your cursor over the viewport and press Num-5 and then Num-7. This will set our viewport into orthographic perspective and position it so we are looking directly down at the scene.
 
