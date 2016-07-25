@@ -1,21 +1,23 @@
 # Intro
 
+Following the shooting at Pulse night club, we at the _Tampa Bay Times_ knew we wanted to tell the story in a way that was more concrete than just words on a page. We decided to create a 3d graphic that would tell the story of that night’s events.
 
-Following the shooting at Pulse night club, we at the _Tampa Bay Times_ knew we wanted to tell the story in a way that was more concrete than just words on a page. We decided to create a [3d graphic](http://www.tampabay.com/pulse) that would tell the story of that night’s events.
+The [resulting graphic](http://www.tampabay.com/pulse) is one of our most ambitious breaking-news projects and an example of our team’s mission — to combine technology with reporting and narrative — under circumstances we’d never experienced before. Before that week, no one at the _Times_ had created a real-time 3d graphic. It was also ambitious in size; our projects are typically close collaborations with a small group of reporters, but this one required a massive newsroom wide effort.
 
-There were two teams that worked together, in parallel, to create the graphic. One was a full team of reporters, photographers, and editors - both in the office and on scene in Orlando - who found bits of information, like the Pulse floor plan filed with the city, and stories from survivors. From these threads, they built a narrative of that night’s events.
+We separated the staff working on the project into two teams that worked in parallel to create the graphic. One was a full team of reporters, photographers, and editors — both in the office and on scene in Orlando — who found bits of information, like the Pulse floor plan filed with the city, and stories from survivors. From these threads, they built a narrative of that night’s events.
 
 The other team was focused on tech. The tech team (composed of Nathaniel Lash, Eli Zhang, Martin Frobisher, and myself) had two goals. The first was to get a 3d model animating on the page; the second was to do it in a way that was flexible enough that the visual could quickly evolve as the reporting team edited and refined the narrative.
 
-In this article I talk about how we met those two goals. This article is a low-level technical tutorial and assumes only that the reader knows how to write vanilla es5 javascript but experience with OOP will be helpful. By the end of the article, you will have built [this](http://linklink). 
+After the graphic ran, readers told us that the story was moving and effective. We also fielded a lot of questions from folks in other newsrooms asking how they could do something similar. 
 
-[Link to repo](https://github.com/ejmurra/3d-story)
+This article is an attempt to answer those questions. We won’t discuss high level narrative decisions — that could be an article on it’s own — instead, this article is a low-level technical tutorial. It assumes only that the reader knows how to write vanilla es5 javascript, though experience with object-oriented programming will be helpful. If you aren’t familiar with javascript, you may still be interested in the [section on Blender](#modeling), the 3d modeling and rendering software. By the end of the article, you will have built [this](http://linklink). 
 
+[Link to repo](https://github.com/tbtimes/3d-story)
 ##Table of contents
 * [Setting up your project](#setting-up-your-project)
 	* [Project structure](#project-structure)
 	* [Gulp, ES6 and Browserify](#gulp-es6-and-browserify)
-* [Modeling](#Modeling) (using the free software, Blender)
+* [Modeling](#modeling) (using the free software, Blender)
 	* [A brief tour of Blender](#a-brief-tour-of-blender)
 	* [Laying the foundations](#laying-the-foundations)
 	* [Putting up walls](#putting-up-walls)
@@ -27,6 +29,7 @@ In this article I talk about how we met those two goals. This article is a low-l
 	* [Animations with tweenjs](#animations-with-tweenjs)
 	* [Creating a scene manager](#creating-a-scene-manager)
 	* [Finishing our controller with Swiper](#finishing-our-controller-with-swiper)
+* [Conclusion and lessons learned](#conclusion)
 
 # Setting up your project
 
@@ -137,17 +140,13 @@ gulp.task('dev', ['scripts'], function() {
 ```
 # Modeling
 With our build process in place, we will now create the model we will use in our scene. If you aren't interested in modeling, you can download the completed model [here](./resources/roomModel.obj) and [skip to the next section](#getting-it-on-the-page).
-
 [Blender](www.blender.org) is a free, open source 3D modeling and animation software. Because Blender is a very complex piece of software, we are only going to cover a tiny subset of its features. For a more in-depth Blender tutorial, check out [the software’s wiki book](https://en.wikibooks.org/wiki/Blender_3D:_Noob_to_Pro).
 ## A brief tour of Blender
-_Blender was designed to be used with a full keyboard and three button mouse. If you are missing either of those you’ll need to substitute the commands below with ones [listed here](https://en.wikibooks.org/wiki/Blender_3D:_Noob_to_Pro/Non-standard_equipment)_.
-
+_Blender was designed to be used with a full keyboard and three button mouse. If you are missing either of those you’ll need to substitute the commands below with ones [listed here](https://en.wikibooks.org/wiki/Blender_3D:_Noob_to_Pro/Non-standard_equipment)_
 Open up blender and click outside of the splash screen. Your screen should look like this: ![Fresh blender project](./images/blenderFreshProject.png)
 The main window in the center of the screen is known as the 3D viewport. This is where we’ll be doing the majority of our work. For now, you can ignore the other windows.
 You can navigate around the viewport by pressing your middle mouse button and dragging to rotate the view or holding shift + middle mouse button and dragging to pan the view. Scrolling the mouse wheel will zoom in and out.
-
 You can also use the numpad to control the 3D viewport. Num7, Num1, and Num3 all set the viewport to a specific position (see table below). Num5 is a little different, it toggles the screen between _orthographic_ and _perspective_ view modes. In perspective, objects in the viewport are rendered in three point perspective. This gives them a lifelike look with foreshortening. Orthographic is a 2D projection of a 3D object in which parallel lines always appear parallel. Typically, models are created in orthographic view (because it’s easier to make everything line up) and rendered in perspective (because it looks more realistic).
-
 It is important that you use the numpad to manipulate the view (or [numpad equivalent](https://en.wikibooks.org/wiki/Blender_3D:_Noob_to_Pro/Non-standard_equipment) if you don’t have a full keyboard) - the numbers in the row at the top of the keyboard have entirely different functions!
 
 | Key       | view   |
@@ -161,14 +160,12 @@ It is important that you use the numpad to manipulate the view (or [numpad equiv
 | Num5 | Toggle perspective/orthographic view|
 
 You can select an object by putting your cursor over it and right clicking. Pressing the “a” key will toggle between selecting all object and deselecting all objects. Objects that are selected have an orange outline.
-
 You can also apply various _transformations_ to selected Objects. With an object selected, the “g” key will allow you to translate (move) the object arend the viewport. The “s” key will allow you to scale an object. The “r” key will allow you to rotate an object. Once you begin a transformation, you can press the middle mouse button to constrain the transformation along an axis. When you are finished, you can left click to save the transformation or right click to cancel the transformation.
-
 Go ahead and practice moving around the 3D viewport, selecting and moving the default objects. When you are finished, exit Blender without saving and reopen the program. 
 ## Laying the foundations
 Blender starts with a default scene that includes a camera (the black pyramid), a cube, and a lamp (the black "sun" icon). The cube should be selected. Press "a" twice to select all objects, press the "delete" key and then "enter" to confirm. You will be left with an empty scene.
 
-The first thing we are going to do is load an image of a floorplan into the scene that we can use as a reference to build our model off of. Download the `resources/simpleFloorPlan.jpg` from [this repo](https://github.com/ejmurra/3d-story). (This is simpler than what we used to make our graphic, but similar to what the City of Orlando sent us of the Pulse nightclub.)
+The first thing we are going to do is load an image of a floorplan into the scene that we can use as a reference to build our model off of. Download the `resources/simpleFloorPlan.jpg` from [this repo](https://github.com/tbtimes/3d-story). (This is simpler than what we used to make our graphic, but similar to what the City of Orlando sent us of the Pulse nightclub.)
 
 Back in Blender, place your cursor over the viewport and press Num-5 and then Num-7. This will set our viewport into orthographic perspective and position it so we are looking directly down at the scene.
 
@@ -750,7 +747,13 @@ If you refresh your browser window you'll see that nothing has changed. That's b
 
 ## Finishing our controller with Swiper
 MVC (Model, View, Controller) is a pattern in software development that helps programmers to manage complex states, update the states based on events and interactions, and display those states in a view.
-It can be a tricky idea to grasp, but we’ve actually already built our project to match this pattern: `initialScene.json` acts as our model, the RenderManager acts as our view, and the SceneManager is one piece of our controller. In this section we will create the second half of that controller to finish our project — the part that lets the reader control the animation.
+
+It can be a tricky idea to grasp, but we’ve actually already built our project to match this pattern: `initialScene.json` acts as our model, the RenderManager acts as our view, and the SceneManager is one piece of our controller. 
+
+We architected our project this way because it is more flexible. If reporters edit the order of the narrative, we only have to make changes to the SceneManager. If we decide to tweak the camera position, we only have to move the waypoints around in the Threejs editor and export the json. And we shouldn’t have to touch the RenderManager at all, it is a little black box with a focused api that the controller can use to manipulate the scene.
+
+In this section we will create the second half of that controller to finish our project — the part that lets the reader control the animation.
+
 There are an infinite number of ways you could create a controller here depending on what inputs you are watching. For this example, we will use a library called [Swiper](http://idangero.us/swiper/#.V3Vv6JMrJ24) to watch for input and trigger changes on SceneManager. (We use swiper often for projects like this.)
 First, add a link to the swiper stylesheet in the head of `index.html`: `<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.3.1/css/swiper.min.css">`. Below that stylesheet, add the following styles:
 
@@ -832,7 +835,7 @@ loader.load('resources/initialScene.json', loadedScene => {
     // and clear those animations
     sceneManager.clearCurrentAnimation();
 
-    // Here we use a case statement to trigger the proper scene based on the Swiper slide index
+    // Here we use a case statement to trigger the proper scene based on the index
     switch (index) {
       case 0:
         sceneManager.firstScene();
@@ -842,7 +845,6 @@ loader.load('resources/initialScene.json', loadedScene => {
         break;
       case 2:
         sceneManager.thirdScene();
-        break;
     }
 
     // Finally we start the scene's animation sequence
@@ -850,4 +852,12 @@ loader.load('resources/initialScene.json', loadedScene => {
   }
 });
 ```
-If you relaunch your webserver and open `index.html` in your browser you should be able to walk through all three scenes. We have clearly met our first goal of getting a model animating on the page, but more importantly we have met our second goal of building a flexible architecture. This will allow us to quickly integrate any edits the reporting team may make to the narrative — we can add new scenes to the animation by creating methods on the SceneManager and we can reorder the scenes by moving them around in `delegateUpdate`.
+If you relaunch your webserver and open `index.html` in your browser you should be able to walk through all three scenes. We have clearly met our first goal of getting a model animating on the page, but more importantly we have met our second goal of building a flexible architecture. This will allow us to quickly integrate any edits the reporting team may make to the narrative — we can add new scenes to the animation by creating methods on the SceneManager and then calling those methods in the `delegateUpdate` function and we can reorder the scenes by moving them around in `delegateUpdate`.
+
+# Conclusion
+
+In this article we covered a lot of ground quickly and there’s still plenty of room to polish the result, which I’ll leave as an exercise to the reader. But before I sign off, I want to share a few lessons we learned from this project:
+
+1. Build the smallest set of features you need to prototype. It’s easy to get caught up while making the RenderManager and to start including features such as a light dimmer or color changer. While both of these add nice polish, they aren’t necessary for a prototype and you will waste time polishing scenes that could end up getting reworked or cut entirely.
+2. Learn to use a build step. It’s really, really easy (especially when you are learning a new library or framework) to just write code as one gigantic script file. It’s doubly easy to do that if you are working with javascript which has no native support for creating and loading modules. Adding the build step to this project allowed us to not only use third party modules in a consistent way but to modularly write our own code. Modularizing our code allowed us to separate our concerns so that as the story was edited, we could quickly find and change the parts of our code that needed to change with it. As an added benefit, this build step can be copy-pasted into other projects and used as a basis for more complex setups.
+3. Don’t be afraid to learn something new and to experiment but set realistic expectations for yourself. For example, on Tuesday we gave ourselves the goal of getting the model animating on a page. It didn’t have to be pretty, or interactive, but it did have to be there. Hitting small markers like this helped us to both keep making progress, but to also give us some breathing room to pivot if our original plans weren’t going to work out.
